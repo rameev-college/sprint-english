@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sprint: International Team</title>
+<style>
+:root{--blue:#7199F1;--blue-d:#4F7BE0;--lime:#EFFE74;--bg:#F4F5F7;--ink:#222;--muted:#6B7080;--card:#fff;--ok:#2E9E5B;--bad:#E0524F;--line:#E2E5EC}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.brand{font-weight:800}
+.brand span{background:var(--lime);padding:0 6px;border-radius:6px}
+.stat{font-size:13px;font-weight:700;background:var(--bg);border-radius:999px;padding:5px 11px;white-space:nowrap}
+.trust{display:flex;align-items:center;gap:6px}
+.trust .tb{width:90px;height:8px;background:#E3E7F0;border-radius:9px;overflow:hidden}
+.trust .tb i{display:block;height:100%;background:var(--ok);transition:width .4s,background .4s}
+.grow{flex:1}
+.layout{display:grid;grid-template-columns:minmax(300px,1fr) minmax(320px,1fr);gap:16px;max-width:1100px;margin:0 auto;padding:16px}
+.panel{background:#fff;border-radius:18px;box-shadow:0 2px 10px rgba(34,34,34,.05);display:flex;flex-direction:column;min-height:0}
+.ph{padding:12px 16px;border-bottom:1px solid var(--line);font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ph small{font-weight:500;color:var(--muted)}
+/* chat */
+.team{display:flex;gap:6px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--line)}
+.who{display:flex;align-items:center;gap:6px;font-size:12px;background:var(--bg);border-radius:999px;padding:3px 10px 3px 3px}
+.av{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:12px;color:#fff;flex:none}
+.av.J{background:#2F6FDE}.av.P{background:#D9822B}.av.L{background:#2E9E5B}.av.Y{background:#222}
+.chat{padding:14px 16px;overflow-y:auto;height:56vh;min-height:360px;display:flex;flex-direction:column;gap:10px}
+.msg{display:flex;gap:8px;align-items:flex-start;max-width:95%}
+.msg .b{background:var(--bg);border-radius:4px 14px 14px 14px;padding:8px 12px}
+.msg .n{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:2px}
+.msg.me{align-self:flex-end;flex-direction:row-reverse}
+.msg.me .b{background:#EAF0FE;border-radius:14px 4px 14px 14px}
+.sys{align-self:center;font-size:12px;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:999px;padding:3px 12px;text-align:center}
+.ticket{border:2px solid var(--blue);background:#F6F9FF}
+.tr{font-size:12px;color:var(--muted);margin-top:6px;border-top:1px dashed #C9D3EE;padding-top:6px}
+.actions{padding:12px 16px;border-top:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap}
+.btn{appearance:none;border:0;background:var(--blue);color:#fff;font:inherit;font-weight:700;padding:10px 16px;border-radius:12px;cursor:pointer}
+.btn:hover{background:var(--blue-d)}
+.btn.ghost{background:#fff;color:var(--blue-d);border:2px solid var(--blue)}
+.btn.small{padding:7px 12px;font-size:13px}
+.btn:disabled{opacity:.4;cursor:default}
+.reply{display:block;width:100%;text-align:left;background:#fff;color:var(--ink);border:2px solid var(--line);font-weight:500}
+.reply:hover{border-color:var(--blue);background:#F6F9FF}
+.typing{font-size:12px;color:var(--muted);font-style:italic}
+/* preview */
+.stage{padding:16px;display:flex;justify-content:center;background:linear-gradient(180deg,#EEF2FB,#F7F8FB);border-bottom:1px solid var(--line)}
+.phone{width:280px;border:10px solid #222;border-radius:30px;background:#fff;overflow:hidden;box-shadow:0 10px 30px rgba(34,34,34,.15)}
+.app{padding:18px 16px 22px;min-height:360px;position:relative}
+.logo{width:46px;height:46px;border-radius:12px;background:conic-gradient(var(--blue) 0 25%,var(--lime) 0 50%,var(--blue) 0 75%,var(--lime) 0);margin-bottom:12px}
+.spin-gently{animation:spin 6s linear infinite}
+.spin-wildly{animation:spin .25s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#title{font-size:22px;font-weight:800;margin:0 0 6px;line-height:1.2}
+.banner{background:var(--lime);border-radius:12px;padding:10px 12px;font-weight:700;margin:12px 0}
+.price{font-size:26px;font-weight:800;margin:10px 0 14px}
+.dl{display:block;width:100%;border:0;border-radius:12px;padding:12px;font-weight:800;color:#fff;background:#222;font:inherit;font-weight:800}
+.code{font-family:Consolas,Menlo,monospace;font-size:12.5px;background:#1F2330;color:#E8ECF7;padding:10px 14px;margin:0;white-space:pre;overflow-x:auto;border-radius:0}
+.code .k{color:#8FB4FF}.code .bad{color:#FF8A8A;text-decoration:wavy underline}
+.controls{padding:12px 16px;display:grid;gap:12px}
+.ctl label{display:block;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:2px solid var(--line);background:#fff;border-radius:10px;padding:6px 10px;font:inherit;font-size:13px;cursor:pointer;color:var(--ink)}
+.seg button.on{border-color:var(--blue);background:#EAF0FE;font-weight:700}
+.sw{width:30px;height:30px;border-radius:8px;border:3px solid #fff;outline:2px solid var(--line);cursor:pointer}
+.sw.on{outline:3px solid var(--blue)}
+input[type=range]{width:100%}
+input[type=text]{font:inherit;padding:8px 10px;border:2px solid var(--line);border-radius:10px;width:100%}
+.overlay{position:fixed;inset:0;background:rgba(34,34,34,.45);display:grid;place-items:center;padding:16px;z-index:20}
+.modal{background:#fff;border-radius:20px;max-width:520px;width:100%;padding:24px}
+.modal h1{font-size:24px;margin:4px 0 10px;line-height:1.2}
+.lvl{font-size:12px;font-weight:700;color:var(--blue-d);text-transform:uppercase;letter-spacing:.6px}
+.codebox{font-family:Consolas,Menlo,monospace;font-size:24px;letter-spacing:3px;background:var(--lime);padding:8px 14px;border-radius:12px;display:inline-block;margin:6px 0 12px}
+.muted{color:var(--muted)}
+.hide{display:none!important}
+.flash{animation:flash .6s}
+@keyframes flash{0%{box-shadow:0 0 0 0 rgba(113,153,241,.8)}100%{box-shadow:0 0 0 14px rgba(113,153,241,0)}}
+@media (max-width:820px){.layout{grid-template-columns:1fr}.chat{height:auto;max-height:60vh}.actions:not(:empty){position:fixed;left:0;right:0;bottom:0;background:#fff;z-index:6;box-shadow:0 -4px 16px rgba(34,34,34,.12);max-height:55vh;overflow-y:auto}body{padding-bottom:140px}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="brand">Sprint <span>#23</span></div>
+  <div class="stat" id="task">Задача 0 / 6</div>
+  <div class="stat trust">Доверие команды <span class="tb"><i id="trust" style="width:100%"></i></span></div>
+  <div class="grow"></div>
+  <div class="stat" id="xp">0 XP</div>
+</div>
+
+<div class="layout">
+  <section class="panel">
+    <div class="ph">Team chat <small>#taskflow-release</small></div>
+    <div class="team">
+      <span class="who"><span class="av J">J</span>Jack · team lead · Sydney</span>
+      <span class="who"><span class="av P">P</span>Priya · QA · Bangalore</span>
+      <span class="who"><span class="av L">L</span>Lucas · designer · São Paulo</span>
+    </div>
+    <div class="chat" id="chat"></div>
+    <div class="actions" id="actions"></div>
+  </section>
+
+  <section class="panel">
+    <div class="ph">TaskFlow — мобильная версия <small>то, что увидят пользователи</small></div>
+    <div class="stage">
+      <div class="phone"><div class="app">
+        <div class="logo" id="logo"></div>
+        <h2 id="title">Plan your day</h2>
+        <div style="font-size:13px;color:#6B7080" id="sub">Tasks, reminders and focus timer.</div>
+        <div class="banner" id="banner">New: dark mode is here!</div>
+        <div class="price" id="price">$1999</div>
+        <button class="dl" id="dl">Download</button>
+      </div></div>
+    </div>
+    <pre class="code" id="css"></pre>
+    <div class="controls">
+      <div class="ctl"><label>Цвет заголовка</label><div class="seg" id="c-color"></div></div>
+      <div class="ctl"><label>Выравнивание заголовка</label><div class="seg" id="c-align"></div></div>
+      <div class="ctl"><label>Появление баннера</label><div class="seg" id="c-banner"></div></div>
+      <div class="ctl"><label>Видимость кнопки Download: <span id="opv"></span></label><input type="range" id="c-op" min="0.05" max="1" step="0.05"></div>
+      <div class="ctl"><label>Вращение логотипа</label><div class="seg" id="c-spin"></div></div>
+      <div class="ctl"><label>Цена</label><input type="text" id="c-price"></div>
+    </div>
+  </section>
+</div>
+
+<div class="overlay" id="ov"></div>
+
+<script>
+/* ---------- состояние макета ---------- */
+const P = {color:"#222222", align:"left", banner:"fast", op:0.15, spin:"off", price:"$1999", colourBug:false};
+const COLORS = [["#222222","black"],["#1F3A93","dark blue"],["#D9363E","red"],["#9AA0AE","grey"]];
+const G = {name:"", xp:0, trust:100, task:0, busy:false};
+const SALT="rameev-sprint-2026";
+const $=id=>document.getElementById(id);
+
+function renderPreview(){
+  const t=$("title");
+  t.style.color = P.colourBug ? "#222222" : P.color;
+  t.style.textAlign = P.align;
+  $("sub").style.textAlign = P.align;
+  $("dl").style.opacity = P.op;
+  $("opv").textContent = Math.round(P.op*100)+"%";
+  $("logo").className = "logo" + (P.spin==="gently"?" spin-gently":P.spin==="wildly"?" spin-wildly":"");
+  $("price").textContent = P.price;
+  const prop = P.colourBug ? `<span class="bad">colour</span>` : `<span class="k">color</span>`;
+  $("css").innerHTML =
+`.title {
+  ${prop}: ${P.color};
+  <span class="k">text-align</span>: ${P.align};
+}
+.banner { <span class="k">animation-duration</span>: ${({fast:"0.2s",normal:"1s",slow:"3s"})[P.banner]}; }
+.download { <span class="k">opacity</span>: ${P.op}; }
+.logo { <span class="k">animation</span>: ${({off:"none",gently:"spin 6s",wildly:"spin 0.25s"})[P.spin]}; }`;
+  // контролы
+  $("c-color").innerHTML = COLORS.map(([c,n])=>`<button class="sw ${P.color===c?"on":""}" title="${n}" style="background:${c}" data-v="${c}"></button>`).join("");
+  seg("c-align",[["left","left"],["center","center"],["right","right"]],"align");
+  seg("c-banner",[["fast","fast"],["normal","normal"],["slow","slow"]],"banner");
+  seg("c-spin",[["off","off"],["gently","gently"],["wildly","wildly"]],"spin");
+  $("c-color").querySelectorAll("button").forEach(b=>b.onclick=()=>{P.color=b.dataset.v;renderPreview();});
+}
+function seg(id,opts,key){
+  $(id).innerHTML=opts.map(([v,l])=>`<button class="${P[key]===v?"on":""}" data-v="${v}">${l}</button>`).join("");
+  $(id).querySelectorAll("button").forEach(b=>b.onclick=()=>{P[key]=b.dataset.v;renderPreview(); if(key==="banner") playBanner();});
+}
+function playBanner(){
+  const b=$("banner"); const d=({fast:200,normal:1000,slow:3000})[P.banner];
+  b.animate([{opacity:0,transform:"translateY(-8px)"},{opacity:1,transform:"none"}],{duration:d,easing:"ease-out"});
+}
+$("c-op").oninput=e=>{P.op=+e.target.value;renderPreview();};
+$("c-price").oninput=e=>{P.price=e.target.value;renderPreview();};
+
+/* ---------- чат ---------- */
+const NAMES={J:"Jack",P:"Priya",L:"Lucas",Y:"You"};
+function scroll(){ const c=$("chat"); c.scrollTop=c.scrollHeight; }
+function add(who,html,opts={}){
+  const c=$("chat");
+  if(who==="sys"){ c.insertAdjacentHTML("beforeend",`<div class="sys">${html}</div>`); scroll(); return; }
+  const me = who==="Y";
+  const tr = opts.tr ? `<div class="tr hide">${opts.tr}</div>` : "";
+  c.insertAdjacentHTML("beforeend",`<div class="msg ${me?"me":""}"><span class="av ${who}">${who==="Y"?"Я":who}</span><div class="b ${opts.ticket?"ticket":""}"><div class="n">${me?G.name:NAMES[who]}</div>${html}${tr}</div></div>`);
+  scroll();
+}
+function say(list){ // последовательность реплик с «печатает…»
+  return list.reduce((p,[who,html,opts])=>p.then(()=>new Promise(r=>{
+    if(who==="sys"){ add("sys",html); return setTimeout(r,250); }
+    const c=$("chat"); c.insertAdjacentHTML("beforeend",`<div class="typing" id="ty">${NAMES[who]} is typing…</div>`); scroll();
+    setTimeout(()=>{ $("ty")?.remove(); add(who,html,opts||{}); r(); }, Math.min(1400, 450+html.length*8));
+  })),Promise.resolve());
+}
+function actions(html){ $("actions").innerHTML=html; }
+function setXP(d){ G.xp=Math.max(0,G.xp+d); $("xp").textContent=G.xp+" XP"; }
+function setTrust(d){ G.trust=Math.max(0,Math.min(100,G.trust+d)); const i=$("trust"); i.style.width=G.trust+"%"; i.style.background=G.trust>60?"var(--ok)":G.trust>30?"#E0A02B":"var(--bad)"; }
+function hash(s){let x=5381;for(const c of s){x=((x<<5)+x+c.codePointAt(0))>>>0;}return x;}
+function norm(s){return s.trim().toLowerCase().replace(/\s+/g," ");}
+function makeCode(name,xp,trust){const v=xp*1000+trust;const hv=hash(SALT+"|"+norm(name)+"|"+v).toString(36).toUpperCase().padStart(6,"0").slice(-5);return v.toString(36).toUpperCase()+"-"+hv;}
+
+/* ---------- задачи ---------- */
+const TASKS = [
+ { who:"J",
+   text:"Let's start with the title. Please make the title <b>colour dark blue</b> and <b>centre</b> it.",
+   tr:"Начнём с заголовка. Сделай цвет заголовка тёмно-синим и выровняй его по центру.",
+   check:()=> P.color==="#1F3A93" && P.align==="center",
+   hint:()=> P.color!=="#1F3A93" ? "Hmm, the colour isn't right. I asked for dark blue." : "The colour is good, but the title should be in the centre.",
+   ok:"Perfect, looks much better!",
+   after: ()=> colourTalk()
+ },
+ { who:"P",
+   text:"I tested the banner. It appears <b>too quickly</b> — users can <b>hardly</b> read it. Please make it appear <b>slowly</b>.",
+   tr:"Я протестировала баннер. Он появляется слишком быстро — пользователи едва успевают его прочитать. Сделай, чтобы он появлялся медленно.",
+   check:()=> P.banner==="slow",
+   hint:()=> P.banner==="fast" ? "It's still flying in. I said slowly." : "Better, but still a bit fast. Slowly, please.",
+   ok:"Yes! Now I can read it easily."
+ },
+ { who:"L",
+   text:"The Download button is <b>hardly visible</b> on my phone. Can you fix it?",
+   tr:"Кнопку Download почти не видно на моём телефоне. Можешь исправить?",
+   check:()=> P.op>=0.9,
+   hint:()=> P.op<0.15 ? "Now it's gone completely! I meant: it's almost invisible, people can't see it." : "A bit better, but it's still pale. People should see it clearly.",
+   ok:"Great, now it's clearly visible. Thank you!"
+ },
+ { who:"J",
+   text:"The logo looks a bit boring. Make it spin — but <b>gently</b>, please, not wildly.",
+   tr:"Логотип скучноват. Пусть вращается — но плавно, пожалуйста, не бешено.",
+   check:()=> P.spin==="gently",
+   hint:()=> P.spin==="wildly" ? "Whoa, that's way too fast! My head is spinning. Gently, please." : "It's not spinning at all yet.",
+   ok:"Nice and smooth. Good job."
+ },
+ { who:"P",
+   text:"Bug report: the price is wrong. It must be <b>$19.99</b>, not $1999. Please check it <b>carefully</b> — every symbol matters.",
+   tr:"Баг: неверная цена. Должно быть $19.99, а не $1999. Проверь внимательно — важен каждый символ.",
+   check:()=> P.price.replace(/\s/g,"")==="$19.99",
+   hint:()=> /19[.,]99/.test(P.price) ? "Almost! Check carefully: the dollar sign and the dot." : "The price is still wrong. It must be exactly $19.99.",
+   ok:"Checked carefully — correct now. Thanks!"
+ },
+ { who:"L", builder:true,
+   text:"Last thing: can you write the release note? Please use correct simple English — it's a foreign language for me, and I want to understand it.",
+   tr:"Последнее: напишешь заметку к релизу? Пиши, пожалуйста, простым и правильным английским — для меня это иностранный язык, хочу всё понять.",
+ }
+];
+
+const RN = [
+  ["The banner now appears",["slow","slowly"],1],
+  ["The Download button is",["clear","clearly"],1,"visible."],
+  ["The app works",["good","well"],1,"on all phones."],
+  ["The logo spins",["gentle","gently"],1],
+  ["We checked the price",["careful","carefully"],1]
+];
+
+/* ---------- сценарий ---------- */
+function start(){
+  renderPreview();
+  $("ov").innerHTML=`<div class="modal"><div class="lvl">Английский · Практика</div>
+   <h1>Твой первый спринт в международной команде</h1>
+   <p>Ты — новый разработчик в команде приложения TaskFlow. Коллеги пишут в чат по-английски. Читай задачи, меняй макет на панели справа и отправляй на ревью. Если команда поймёт тебя неправильно — увидишь это сразу.</p>
+   <p class="muted">≈ 15 минут. Есть кнопка «Перевести», но она стоит XP.</p>
+   <p><input type="text" id="nm" placeholder="Имя и фамилия"></p>
+   <button class="btn" id="go" disabled>Войти в чат</button></div>`;
+  const nm=$("nm"),go=$("go"); nm.oninput=()=>go.disabled=nm.value.trim().split(/\s+/).length<2;
+  go.onclick=()=>{G.name=nm.value.trim();$("ov").classList.add("hide");intro();};
+}
+
+function intro(){
+  add("sys",`${G.name} joined #taskflow-release`);
+  say([
+    ["J","Welcome to the team! Quick intro: I'm from Sydney, English is my native language."],
+    ["P","Hi! I'm from Bangalore. In India English is an official language, but at home I speak Kannada."],
+    ["L","Olá! I'm from Brazil. I learned English at school, it's a foreign language for me."],
+    ["J","And what about you? What is English for you?",{tr:"А у тебя? Чем для тебя является английский?"}]
+  ]).then(()=>{
+    actions(trBtn()+ ["English is my native language.","English is an official language in Russia.","English is a foreign language for me."]
+      .map((t,i)=>`<button class="btn reply" data-i="${i}">${t}</button>`).join(""));
+    bindTr();
+    document.querySelectorAll(".reply").forEach(b=>b.onclick=()=>{
+      const i=+b.dataset.i; add("Y",b.textContent); actions("");
+      if(i===2){ setXP(20); say([["L","Same as me! So we both write in simple English."],["P","That's why English is our lingua franca here: four people, four different native languages, one common language."],["sys","Начинаем спринт. Задачи будут приходить в чат."]]).then(nextTask); }
+      else { setTrust(-10); say([["J", i===0?"Really? I thought you speak Russian at home. Native means your first language.":"Hmm, I don't think so. In Russia English has no official status. People study it at school."],["J","Try again?"]]).then(intro2); }
+    });
+  });
+}
+function intro2(){
+  actions(["English is a foreign language for me.","English is my native language."].map((t,i)=>`<button class="btn reply" data-i="${i}">${t}</button>`).join(""));
+  document.querySelectorAll(".reply").forEach(b=>b.onclick=()=>{ add("Y",b.textContent); actions("");
+    if(b.dataset.i==="0"){ setXP(10); say([["L","Same as me! So we both write in simple English."],["P","That's why English is our lingua franca here: four people, four different native languages, one common language."],["sys","Начинаем спринт. Задачи будут приходить в чат."]]).then(nextTask);} else { setTrust(-10); say([["J","Native = your first language. For you it's Russian, right?"]]).then(intro2);} });
+}
+
+let tries=0, usedTr=false;
+function trBtn(){ return `<button class="btn ghost small" id="trb">Перевести (−5 XP)</button>`; }
+function bindTr(){ const b=$("trb"); if(!b) return; b.onclick=()=>{ const all=document.querySelectorAll(".tr"); const last=all[all.length-1]; if(last&&last.classList.contains("hide")){ last.classList.remove("hide"); setXP(-5); usedTr=true; scroll(); } b.disabled=true; }; }
+
+function nextTask(){
+  if(G.task>=TASKS.length) return finish();
+  const t=TASKS[G.task]; tries=0; usedTr=false;
+  $("task").textContent=`Задача ${G.task+1} / ${TASKS.length}`;
+  say([[t.who,`<b>Task ${G.task+1}.</b> ${t.text}`,{tr:t.tr,ticket:true}]]).then(()=>{
+    if(t.builder) return builder();
+    actions(trBtn()+`<button class="btn" id="rev">Отправить на ревью</button>`);
+    bindTr(); $("rev").onclick=review;
+  });
+}
+function review(){
+  const t=TASKS[G.task]; add("Y","Done, please check.");
+  actions("");
+  if(t.check()){
+    const gain = tries===0 ? 40 : 20; setXP(gain);
+    say([[t.who,t.ok]]).then(()=>{ G.task++; (t.after?t.after():Promise.resolve()).then(nextTask); });
+  } else {
+    tries++; setTrust(-8);
+    say([[t.who,t.hint()]]).then(()=>{ actions(trBtn()+`<button class="btn" id="rev">Отправить на ревью ещё раз</button>`); bindTr(); $("rev").onclick=review; });
+  }
+}
+
+/* British vs CSS */
+function colourTalk(){
+  return say([["J","Wait… I wrote <b>colour</b> and <b>centre</b>, but the code says <b>color</b> and <b>center</b>. Our client is British. Should we change the code to British spelling?",{tr:"Подожди… я писал colour и centre, а в коде color и center. Клиент британский. Может, поменять код на британское написание?"}]])
+  .then(()=>new Promise(res=>{
+    actions(trBtn()+[
+      "Yes, I'll change it to colour.",
+      "No: CSS always uses American spelling. British spelling is only for the text users read."
+    ].map((t,i)=>`<button class="btn reply" data-i="${i}">${t}</button>`).join(""));
+    bindTr();
+    document.querySelectorAll(".reply").forEach(b=>b.onclick=()=>{
+      add("Y",b.textContent); actions("");
+      if(b.dataset.i==="0"){
+        P.colourBug=true; renderPreview(); setTrust(-10);
+        say([["sys","Ты поменял color → colour в CSS. Смотри на заголовок."],["P","Guys, the title is black again! The browser doesn't understand <b>colour</b>."],["J","Right — CSS only knows American spelling. Let's change it back."]])
+        .then(()=>{ P.colourBug=false; renderPreview(); say([["sys","color вернули. Код — по-американски, текст для британцев — по-британски."]]).then(res); });
+      } else {
+        setXP(30);
+        say([["J","Good point! Code in American spelling, texts for UK users in British spelling. Learned something today."]]).then(res);
+      }
+    });
+  }));
+}
+
+/* release note builder */
+function builder(){
+  const pick = RN.map(()=>null);
+  function draw(){
+    actions(`<div style="width:100%"><div class="muted" style="font-size:13px;margin-bottom:6px">Release note v2.4 — выбери правильное слово в каждой строке:</div>`+
+      RN.map((r,i)=>`<div style="margin:6px 0">${r[0]} <span class="seg" style="display:inline-flex">${r[1].map((w,j)=>`<button class="${pick[i]===j?"on":""}" data-i="${i}" data-j="${j}">${w}</button>`).join("")}</span> ${r[3]||""}</div>`).join("")+
+      `<div style="margin-top:8px" class="row">${trBtn()}<button class="btn" id="send" ${pick.includes(null)?"disabled":""}>Отправить в чат</button></div></div>`);
+    bindTr();
+    $("actions").querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{pick[+b.dataset.i]=+b.dataset.j;draw();});
+    $("send").onclick=send;
+  }
+  function send(){
+    const lines=RN.map((r,i)=>`${r[0]} ${r[1][pick[i]]} ${r[3]||"."}`.replace(" .","."));
+    add("Y","<b>Release note v2.4</b><br>"+lines.join("<br>")); actions("");
+    const wrong=RN.map((r,i)=>pick[i]!==r[2]?i:-1).filter(i=>i>=0);
+    if(!wrong.length){ setXP(tries===0?60:30); say([["L","I understood everything easily. Thank you!"],["J","Clear and correct. Ship it!"]]).then(()=>{G.task++;nextTask();}); }
+    else { tries++; setTrust(-8);
+      const fix={0:"appears slow → we need an adverb: slowly",1:"clear → clearly: it describes how visible",2:"works good → works well. Good is not an adverb",3:"gentle → gently",4:"careful → carefully"};
+      say([["L",`Hmm, I'm not sure about line ${wrong.map(i=>i+1).join(", ")}.`],["J",fix[wrong[0]]+". Can you fix it?"]]).then(draw);
+    }
+  }
+  draw();
+}
+
+function finish(){
+  $("task").textContent="Релиз готов";
+  setXP(Math.round(G.trust/2));
+  const code=makeCode(G.name,G.xp,G.trust);
+  say([["sys","TaskFlow v2.4 released"],["J",`Great sprint, ${G.name.split(" ")[0]}! Welcome to the team.`]]).then(()=>{
+    $("ov").classList.remove("hide");
+    $("ov").innerHTML=`<div class="modal"><div class="lvl">Релиз выпущен</div>
+     <h1>${G.name}, спринт закрыт</h1>
+     <p><b>${G.xp} XP</b> · доверие команды <b>${G.trust}%</b></p>
+     <p>Твой код результата:</p><div class="codebox">${code}</div>
+     <p><b>Скопируй код и вставь его в ответ на задание на платформе.</b> Код привязан к имени, которое ты ввёл в начале.</p>
+     <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="cp">Скопировать код</button><button class="btn ghost" id="cl">Посмотреть макет</button></div></div>`;
+    $("cp").onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(code);$("cp").textContent="Скопировано";};
+    $("cl").onclick=()=>$("ov").classList.add("hide");
+  });
+}
+
+/* ---------- проверка для преподавателя: ?check ---------- */
+function check(){
+  $("ov").innerHTML=`<div class="modal"><div class="lvl">Для преподавателя</div><h1>Проверка кода студента</h1>
+  <p class="muted">Имя и фамилия — как студент ввёл их в начале игры.</p>
+  <p><input type="text" id="cn" placeholder="Имя Фамилия"></p><p><input type="text" id="cc" placeholder="Код"></p>
+  <button class="btn" id="cb">Проверить</button><p id="cr" style="margin-top:12px"></p></div>`;
+  $("cb").onclick=()=>{const c=$("cc").value.trim().toUpperCase();const v=parseInt(c.split("-")[0],36);
+    const ok=c.includes("-")&&!isNaN(v)&&makeCode($("cn").value,Math.floor(v/1000),v%1000)===c;
+    $("cr").innerHTML=ok?`<b style="color:var(--ok)">Код настоящий.</b> ${Math.floor(v/1000)} XP, доверие команды ${v%1000}%.`:`<b style="color:var(--bad)">Код не совпадает с именем.</b>`;};
+}
+if(location.search.includes("check")){ renderPreview(); check(); } else start();
+</script>
+</body>
+</html>
