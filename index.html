@@ -193,7 +193,9 @@ function setXP(d){ G.xp=Math.max(0,G.xp+d); $("xp").textContent=G.xp+" XP"; }
 function setTrust(d){ G.trust=Math.max(0,Math.min(100,G.trust+d)); const i=$("trust"); i.style.width=G.trust+"%"; i.style.background=G.trust>60?"var(--ok)":G.trust>30?"#E0A02B":"var(--bad)"; }
 function hash(s){let x=5381;for(const c of s){x=((x<<5)+x+c.codePointAt(0))>>>0;}return x;}
 function norm(s){return s.trim().toLowerCase().replace(/\s+/g," ");}
-function makeCode(name,xp,trust){const v=xp*1000+trust;const hv=hash(SALT+"|"+norm(name)+"|"+v).toString(36).toUpperCase().padStart(6,"0").slice(-5);return v.toString(36).toUpperCase()+"-"+hv;}
+function surname(name){const w=name.trim().split(/\s+/);return w[w.length-1]||"";}
+function makeCode(name,xp,trust){const s2=surname(name).slice(0,2).toUpperCase();return `${s2}-${xp}-${trust}-${xp*3+trust}`;}
+function resultBlock(name,xp,trust){return `Спринт пройден. ${name}. Задач выполнено: 6 из 6. XP: ${xp}. Доверие команды: ${trust}%. Код: ${makeCode(name,xp,trust)}`;}
 
 /* ---------- задачи ---------- */
 const TASKS = [
@@ -360,29 +362,31 @@ function builder(){
 function finish(){
   $("task").textContent="Релиз готов";
   setXP(Math.round(G.trust/2));
-  const code=makeCode(G.name,G.xp,G.trust);
+  const block=resultBlock(G.name,G.xp,G.trust);
   say([["sys","TaskFlow v2.4 released"],["J",`Great sprint, ${G.name.split(" ")[0]}! Welcome to the team.`]]).then(()=>{
     $("ov").classList.remove("hide");
     $("ov").innerHTML=`<div class="modal"><div class="lvl">Релиз выпущен</div>
      <h1>${G.name}, спринт закрыт</h1>
      <p><b>${G.xp} XP</b> · доверие команды <b>${G.trust}%</b></p>
-     <p>Твой код результата:</p><div class="codebox">${code}</div>
-     <p><b>Скопируй код и вставь его в ответ на задание на платформе.</b> Код привязан к имени, которое ты ввёл в начале.</p>
-     <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="cp">Скопировать код</button><button class="btn ghost" id="cl">Посмотреть макет</button></div></div>`;
-    $("cp").onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(code);$("cp").textContent="Скопировано";};
+     <p>Твой результат:</p>
+     <div style="background:var(--lime);border-radius:12px;padding:12px 14px;font-family:Consolas,Menlo,monospace;font-size:14px;margin:6px 0 12px">${block}</div>
+     <p><b>Скопируй эту строку целиком, без изменений, и вставь в ответ на задание на платформе.</b></p>
+     <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="cp">Скопировать результат</button><button class="btn ghost" id="cl">Посмотреть макет</button></div></div>`;
+    $("cp").onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(block);$("cp").textContent="Скопировано";};
     $("cl").onclick=()=>$("ov").classList.add("hide");
   });
 }
 
 /* ---------- проверка для преподавателя: ?check ---------- */
 function check(){
-  $("ov").innerHTML=`<div class="modal"><div class="lvl">Для преподавателя</div><h1>Проверка кода студента</h1>
-  <p class="muted">Имя и фамилия — как студент ввёл их в начале игры.</p>
-  <p><input type="text" id="cn" placeholder="Имя Фамилия"></p><p><input type="text" id="cc" placeholder="Код"></p>
+  $("ov").innerHTML=`<div class="modal"><div class="lvl">Для преподавателя</div><h1>Проверка результата студента</h1>
+  <p class="muted">Вставьте строку результата целиком, как её прислал студент.</p>
+  <p><input type="text" id="cc" placeholder="Спринт пройден. Имя Фамилия. …"></p>
   <button class="btn" id="cb">Проверить</button><p id="cr" style="margin-top:12px"></p></div>`;
-  $("cb").onclick=()=>{const c=$("cc").value.trim().toUpperCase();const v=parseInt(c.split("-")[0],36);
-    const ok=c.includes("-")&&!isNaN(v)&&makeCode($("cn").value,Math.floor(v/1000),v%1000)===c;
-    $("cr").innerHTML=ok?`<b style="color:var(--ok)">Код настоящий.</b> ${Math.floor(v/1000)} XP, доверие команды ${v%1000}%.`:`<b style="color:var(--bad)">Код не совпадает с именем.</b>`;};
+  $("cb").onclick=()=>{const t=$("cc").value.trim();
+    const m=t.match(/Спринт пройден\.\s*(.+?)\.\s*Задач выполнено: 6 из 6\.\s*XP:\s*(\d+)\.\s*Доверие команды:\s*(\d+)%\.\s*Код:\s*(\S+)/);
+    const ok=!!m && makeCode(m[1],+m[2],+m[3])===m[4].toUpperCase();
+    $("cr").innerHTML=ok?`<b style="color:var(--ok)">Результат настоящий.</b> ${m[1]}: ${m[2]} XP, доверие команды ${m[3]}%.`:`<b style="color:var(--bad)">Результат не сходится.</b> Строка изменена или неполная.`;};
 }
 if(location.search.includes("check")){ renderPreview(); check(); } else start();
 </script>
